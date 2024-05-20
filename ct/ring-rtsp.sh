@@ -68,5 +68,8 @@ msg_info "Setting Container to Normal Resources"
 pct set $CTID -memory 1024
 msg_ok "Set Container to Normal Resources"
 msg_ok "Completed Successfully!\n"
-echo -e "${APP} is running
+echo -e "${APP} server is listening
+         ${BL}rtsp://${IP}:8554${CL} \n"
+
+echo -e "${APP} client is listening
          ${BL}rtsp://${IP}:554${CL} \n"

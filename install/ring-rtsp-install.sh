@@ -32,12 +32,7 @@ tar -xzf ring-rtsp.tar.gz -C /opt/ring-rtsp --strip-components 1
 cd /opt/ring-rtsp
 msg_ok "Unpacked Ring-RTSP"
 
-cat <<EOF >/opt/ring-rtsp/.env
-RTSP_URL="rtsp://127.0.0.1"
-RTSP_PORT=554
-VIDEO_BITRATE="1536k"
-VIDEO_FRAMERATE=20
-EOF
+cp /opt/ring-rtsp/.env.example /opt/ring-rtsp/.env
 
 # get ring token from user
 msg_info "Enter your Ring token (See https://github.com/dgreif/ring/wiki/Refresh-Tokens)"
