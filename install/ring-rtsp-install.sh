@@ -37,7 +37,7 @@ cp /opt/ring-rtsp/.env.example /opt/ring-rtsp/.env
 # get ring token from user
 msg_info "Enter your Ring token (See https://github.com/dgreif/ring/wiki/Refresh-Tokens)"
 read -s -r RING_TOKEN
-echo "RING_TOKEN=\"${RING_TOKEN}\"" >> /opt/ring-rtsp/.env
+echo -e "\nRING_TOKEN=\"${RING_TOKEN}\"" >> /opt/ring-rtsp/.env
 msg_ok "Applied Ring token to .env file"
 
 
