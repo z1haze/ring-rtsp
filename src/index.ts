@@ -1,10 +1,9 @@
-import {toKebabCase} from "./util";
-
 require('dotenv').config();
 
 import fs from 'fs';
 import RtspServer from "rtsp-streaming-server";
 import {RingApi, RingCamera} from 'ring-client-api';
+import {toCamelCase} from "./util";
 
 const ringApi = new RingApi({
   refreshToken: process.env.RING_TOKEN as string,
@@ -23,7 +22,7 @@ ringApi.onRefreshTokenUpdated.subscribe(async ({newRefreshToken, oldRefreshToken
 );
 
 const startRTSPStream = (camera: RingCamera) => {
-  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/${toKebabCase(camera.name) ?? 'cam-' + camera.id}`;
+  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/${toCamelCase(camera.name) ?? 'cam-' + camera.id}`;
 
   console.log(`Starting RTSP video stream of camera ${camera.id} to ${streamUrl}`);
 
@@ -53,7 +52,7 @@ const startRTSPStream = (camera: RingCamera) => {
 
         setTimeout(() => {
           startRTSPStream(camera);
-        }, 1000 * 30);
+        }, 1000 * 5);
       });
     });
 }
