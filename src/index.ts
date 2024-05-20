@@ -1,3 +1,5 @@
+import {toKebabCase} from "./util";
+
 require('dotenv').config();
 
 import fs from 'fs';
@@ -21,7 +23,7 @@ ringApi.onRefreshTokenUpdated.subscribe(async ({newRefreshToken, oldRefreshToken
 );
 
 const startRTSPStream = (camera: RingCamera) => {
-  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/cam-${camera.id}`;
+  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/${toKebabCase(camera.name) ?? 'cam-' + camera.id}`;
 
   console.log(`Starting RTSP video stream of camera ${camera.id} to ${streamUrl}`);
 
