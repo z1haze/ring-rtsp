@@ -30,16 +30,12 @@ const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
 
   camera.streamVideo({
     output: [
-      '-f',
-      'rtsp',
-      '-c:a',
-      'aac',
-      '-c:v',
-      'libx264',
-      '-preset',
-      'ultrafast',
-      '-tune',
-      'zerolatency',
+      '-f', 'rtsp',
+      '-c:a', 'aac',
+      '-c:v', 'libx264',
+      '-preset', 'veryfast',
+      '-tune', 'zerolatency',
+      '-pix_fmt', 'yuv420p',
       ...streamOptions.output,
       streamUrl,
     ],
