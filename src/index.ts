@@ -31,11 +31,14 @@ const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
   camera.streamVideo({
     output: [
       '-f', 'rtsp',
+      "-rtsp_transport", "tcp",
+      '-hwaccel', 'vaapi',
+      '-vaapi_device', '/dev/dri/renderD128',
       '-c:a', 'aac',
-      '-c:v', 'libx264',
+      '-c:v', 'h264_vaapi',
       '-preset', 'veryfast',
       '-tune', 'zerolatency',
-      '-pix_fmt', 'yuv420p',
+      '-pix_fmt', 'nv12',
       ...streamOptions.output,
       streamUrl,
     ],
@@ -49,7 +52,7 @@ const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
 
         setTimeout(() => {
           startRTSPStream(camera, streamOptions);
-        }, 1000 * 5);
+        }, 1000 * 10);
       });
     });
 }
