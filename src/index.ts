@@ -3,11 +3,14 @@ require('dotenv').config();
 import fs from 'fs';
 import RtspServer from "rtsp-streaming-server";
 import {RingApi, RingCamera} from 'ring-client-api';
+import {StreamOptions} from './types';
+import streamOptionsData from './streams.json';
+
+const streamOptions: StreamOptions[] = streamOptionsData;
 
 const ringApi = new RingApi({
   refreshToken: process.env.RING_TOKEN as string,
-  cameraStatusPollingSeconds: 20,
-  debug: true
+  cameraStatusPollingSeconds: 20
 });
 
 ringApi.onRefreshTokenUpdated.subscribe(async ({newRefreshToken, oldRefreshToken}) => {
@@ -20,8 +23,8 @@ ringApi.onRefreshTokenUpdated.subscribe(async ({newRefreshToken, oldRefreshToken
   }
 );
 
-const startRTSPStream = (camera: RingCamera) => {
-  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/${camera.id}`;
+const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
+  const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/camera_${camera.id}_${streamOptions.name}`;
 
   console.log(`Starting RTSP video stream of camera ${camera.id} to ${streamUrl}`);
 
@@ -29,16 +32,15 @@ const startRTSPStream = (camera: RingCamera) => {
     output: [
       '-f',
       'rtsp',
+      '-c:a',
+      'aac',
       '-c:v',
       'libx264',
       '-preset',
       'ultrafast',
       '-tune',
       'zerolatency',
-      '-b',
-      `${process.env.VIDEO_BITRATE}`,
-      '-filter:v',
-      `fps=${process.env.VIDEO_FRAMERATE}`,
+      ...streamOptions.output,
       streamUrl,
     ],
   })
@@ -50,7 +52,7 @@ const startRTSPStream = (camera: RingCamera) => {
         console.log('Ring call lasted ' + ((Date.now() - startedAt) / 1000) + 's.');
 
         setTimeout(() => {
-          startRTSPStream(camera);
+          startRTSPStream(camera, streamOptions);
         }, 1000 * 5);
       });
     });
@@ -69,7 +71,8 @@ server.start()
       console.log(`Found ${cameras.length} camera(s).`);
 
       for (let camera of cameras) {
-        startRTSPStream(camera);
+        streamOptions.forEach(streamOptions =>
+          startRTSPStream(camera, streamOptions));
       }
     });
   });
