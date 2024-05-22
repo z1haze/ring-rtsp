@@ -32,7 +32,6 @@ const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
     output: [
       '-f', 'rtsp',
       '-c:a', 'copy',
-      '-c:v', 'copy',
       '-preset', 'veryfast',
       '-tune', 'zerolatency',
       '-pix_fmt', 'yuv420p',
