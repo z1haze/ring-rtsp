@@ -26,7 +26,7 @@ ringApi.onRefreshTokenUpdated.subscribe(async ({newRefreshToken, oldRefreshToken
 const startRTSPStream = (camera: RingCamera, streamOptions: StreamOptions) => {
   const streamUrl = `${process.env.RTSP_URL}:${process.env.RTSP_SERVER_PORT}/camera_${camera.id}_${streamOptions.name}`;
 
-  console.log(`Starting RTSP video stream of camera ${camera.id} to ${streamUrl}`);
+  console.log(`Starting RTSP video stream of camera ${camera.id}(${camera.name}) to ${streamUrl}`);
 
   camera.streamVideo({
     output: [
